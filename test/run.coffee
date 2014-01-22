@@ -5,10 +5,22 @@ describe 'maze', ->
 
   describe '#build()', ->
 
-    it 'should build a maze with appropriate size', ->
-      lines = maze.build(3, 3, 0)
+    it 'should build a maze with size 3x3', ->
+      lines = maze.build(3, 3, 0.5)
       lines.should.have.length(3)
       line.should.have.length(3) for line in lines
+
+    it 'should build a maze with size 2x5', ->
+      lines = maze.build(2, 5, 0.5)
+      lines.should.have.length(5)
+      line.should.have.length(2) for line in lines
+
+    it 'should fill squares with 0 or 1', ->
+      lines = maze.build(2, 2, 0.5)
+      for line in lines
+        for square in line
+          square.should.be.a('number')
+          [0, 1].should.include(square)
 
   describe '#solve()', ->
 
