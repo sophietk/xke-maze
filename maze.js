@@ -8,7 +8,7 @@ exports = module.exports = {
         ];
     },
 
-    solve: function (maze, start, end) {
+    solve: function (maze, start, finish) {
         return [
             [2, 0],
             [2, 1],
