@@ -12,6 +12,9 @@
         "url": "https://github.com/sophietk/xke-maze.git"
     },
     "dependencies": {
+        "underscore": "1.5.2",
+        "underscore.string": "2.3.3",
+        "chai": "1.8.1"
     },
     "devDependencies": {
         "coffee-script": "1.6.3",

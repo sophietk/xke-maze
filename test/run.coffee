@@ -1,6 +1,32 @@
 maze = require('../maze.js')
 should = require('chai').should()
 
+describe 'Square', ->
+
+  square = new maze.obj.Square(1, 0)
+
+  it 'should return a square with appropriate position', ->
+    square.should.have.property('x')
+    square.x.should.equal(1)
+    square.should.have.property('y')
+    square.y.should.equal(0)
+
+  it 'should return the left neighbour square', ->
+    square.left().x.should.equal(0)
+    square.left().y.should.equal(0)
+
+  it 'should return the right neighbour square', ->
+    square.right().x.should.equal(2)
+    square.right().y.should.equal(0)
+
+  it 'should return the up neighbour square', ->
+    square.up().x.should.equal(1)
+    square.up().y.should.equal(-1)
+
+  it 'should return the down neighbour square', ->
+    square.down().x.should.equal(1)
+    square.down().y.should.equal(1)
+
 describe 'maze', ->
 
   describe '#build()', ->
@@ -23,6 +49,15 @@ describe 'maze', ->
           [0, 1].should.include(square)
 
   describe '#solve()', ->
+
+    it 'should throw error when start/finish argument is not a position', ->
+      (-> maze.solve([[0]], 'test', [0, 0])).should.throw(Error, 'to be an array')
+      (-> maze.solve([[0]], [0, 0], [0, 0, 1])).should.throw(Error, 'to have a length of 2')
+
+    it 'should throw error when start/finish argument is not in maze', ->
+      (-> maze.solve([[1]], [0, 1], [0, 0])).should.throw(Error, 'should be in maze')
+      (-> maze.solve([[1]], [0, 0], [1, 0])).should.throw(Error, 'should be in maze')
+      (-> maze.solve([[0]], [0, 0], [0, 0])).should.throw(Error, 'should be an available square')
 
     it 'should solve a 3x3 maze', ->
       lines =
