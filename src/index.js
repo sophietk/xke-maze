@@ -44,24 +44,18 @@ exports = module.exports = {
         assert.equal(PATH, maze.square(finish), 'finish position should be an available square');
         assert(!start.equals(finish), 'start and finish should not be the same positions');
 
-        var paths = [new Path([start])],
-            pathOK;
+        var paths = [new Path([start])];
 
-        // TODO : do recursive algorithm instead of loop
         while (true) {
-            var newPaths = [];
-            _.each(paths, function (pathI) {
-                var extendedPathsI = pathI.extend(maze);
-                if (extendedPathsI.length > 0) newPaths = _.union(newPaths, extendedPathsI);
+            paths = _.union(_.flatten(_.map(paths, function (path) {
+                return path.extend(maze);
+            })));
+            if (paths.length === 0) return undefined;
 
-                pathOK = _.find(extendedPathsI, function (path) {
-                    return path.contains(finish)
-                });
+            var pathOK = _.find(paths, function (path) {
+                return path.contains(finish)
             });
-            if (newPaths.length === 0 || pathOK !== undefined) break;
-            paths = newPaths;
+            if (pathOK) return pathOK.toArray();
         }
-
-        return pathOK ? pathOK.toArray() : undefined;
     }
 };
