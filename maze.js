@@ -123,6 +123,7 @@ exports = module.exports = {
         assert(finish.x < maze.width(), 'finish position should be in maze');
         assert.equal(PATH, maze.square(start), 'start position should be an available square');
         assert.equal(PATH, maze.square(finish), 'finish position should be an available square');
+        assert(!start.equals(finish), 'start and finish should not be the same positions');
 
         var paths = [new Path([start])],
             pathOK;

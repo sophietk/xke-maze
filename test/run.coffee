@@ -91,6 +91,9 @@ describe 'maze', ->
       (-> maze.solve([[1]], [0, 0], [1, 0])).should.throw(Error, 'should be in maze')
       (-> maze.solve([[0]], [0, 0], [0, 0])).should.throw(Error, 'should be an available square')
 
+    it 'should throw error when start=finish', ->
+      (-> maze.solve([[1]], [0, 0], [0, 0])).should.throw(Error, 'should not be the same positions')
+
     it 'should solve a 3x3 maze', ->
       lines =
         [[0, 0, 1]
