@@ -129,21 +129,20 @@ exports = module.exports = {
             pathOK;
 
         // TODO : do recursive algorithm instead of loop
-        while_loop:
-            while (true) {
-                var newPaths = [];
-                for (var i in paths) {
-                    var pathI = paths[i],
-                        extendedPathsI = pathI.extend(maze);
-                    if (extendedPathsI.length > 0) newPaths = _.union(newPaths, extendedPathsI);
+        while (true) {
+            var newPaths = [];
+            for (var i in paths) {
+                var pathI = paths[i],
+                    extendedPathsI = pathI.extend(maze);
+                if (extendedPathsI.length > 0) newPaths = _.union(newPaths, extendedPathsI);
 
-                    pathOK = _.find(extendedPathsI, function (path) {
-                        return path.contains(finish)
-                    });
-                }
-                if (newPaths.length === 0 || pathOK !== undefined) break;
-                paths = newPaths;
+                pathOK = _.find(extendedPathsI, function (path) {
+                    return path.contains(finish)
+                });
             }
+            if (newPaths.length === 0 || pathOK !== undefined) break;
+            paths = newPaths;
+        }
 
         return pathOK ? pathOK.toArray() : undefined;
     }
