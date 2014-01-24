@@ -97,7 +97,7 @@ exports = module.exports = {
         for (var yCursor = 0; yCursor < height; yCursor++) {
             var line = [];
             for (var xCursor = 0; xCursor < width; xCursor++) {
-                var square = _.sample([WALL, PATH]);
+                var square = Math.random() <= density ? PATH : WALL;
                 line.push(square);
             }
             maze.push(line);
