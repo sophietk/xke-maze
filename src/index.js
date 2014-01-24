@@ -11,20 +11,22 @@ exports = module.exports = {
 
     build: function (width, height, density) {
         var maze = [];
-        for (var yCursor = 0; yCursor < height; yCursor++) {
+        _.each(_.range(height), function () {
             var line = [];
-            for (var xCursor = 0; xCursor < width; xCursor++) {
+            _.each(_.range(width), function () {
                 var square = Math.random() <= density ? PATH : WALL;
                 line.push(square);
-            }
+            });
             maze.push(line);
-        }
+        });
         return maze;
     },
 
     solve: function (maze, start, finish) {
         assert.typeOf(maze, 'array');
-        for (var i in maze) assert.typeOf(maze[i], 'array');
+        _.each(maze, function (line) {
+            assert.typeOf(line, 'array');
+        });
         assert.typeOf(start, 'array');
         assert.lengthOf(start, 2);
         assert.typeOf(finish, 'array');
@@ -48,15 +50,14 @@ exports = module.exports = {
         // TODO : do recursive algorithm instead of loop
         while (true) {
             var newPaths = [];
-            for (var i in paths) {
-                var pathI = paths[i],
-                    extendedPathsI = pathI.extend(maze);
+            _.each(paths, function (pathI) {
+                var extendedPathsI = pathI.extend(maze);
                 if (extendedPathsI.length > 0) newPaths = _.union(newPaths, extendedPathsI);
 
                 pathOK = _.find(extendedPathsI, function (path) {
                     return path.contains(finish)
                 });
-            }
+            });
             if (newPaths.length === 0 || pathOK !== undefined) break;
             paths = newPaths;
         }
