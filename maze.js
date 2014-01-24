@@ -2,15 +2,28 @@ var _ = require('underscore'),
     assert = require('chai').assert;
 _.str = require('underscore.string');
 
-var Maze = function(array) {
-    this.lines = array;
-    this.square = function(square) {
+/*
+
+ maze representation :
+
+ ┼────────── x
+ |0,0    n,0
+ |
+ |
+ |0,m    n,m
+ y
+
+ */
+
+var Maze = function (arrayArray) {
+    this.lines = arrayArray;
+    this.square = function (square) {
         return this.lines[square.y] !== undefined ? this.lines[square.y][square.x] : undefined;
     };
-    this.width = function() {
+    this.width = function () {
         return this.lines[0].length; // TODO review
     };
-    this.height = function() {
+    this.height = function () {
         return this.lines.length;
     };
 };
@@ -18,28 +31,53 @@ var Maze = function(array) {
 var Square = function (x, y) {
     this.x = x;
     this.y = y;
-    this.left = function() {
+    this.left = function () {
         return new Square(this.x - 1, this.y);
     };
-    this.right = function() {
+    this.right = function () {
         return new Square(this.x + 1, this.y);
     };
-    this.up = function() {
+    this.up = function () {
         return new Square(this.x, this.y - 1);
     };
-    this.down = function() {
+    this.down = function () {
         return new Square(this.x, this.y + 1);
     };
-    this.equals = function(otherSquare) {
+    this.neighbours = function () {
+        return [this.left(), this.right(), this.up(), this.down()];
+    };
+    this.equals = function (otherSquare) {
         return this.x === otherSquare.x && this.y === otherSquare.y;
     };
-    this.toString = function() {
-        return _.str.sprintf('%s,%s', this.x, this.y);
-    };
-    this.toArray = function() {
+    this.toArray = function () {
         return [this.x, this.y];
     };
-    return this;
+};
+
+var Path = function (squareArray) {
+    this.array = squareArray.slice() || []; // copy
+    this.push = function (square) {
+        this.array.push(square);
+        return this;
+    };
+    this.contains = function (square) {
+        return _.find(this.array, function (pathSquare) {
+            return square.equals(pathSquare);
+        }) !== undefined;
+    };
+    this.extend = function (maze) {
+        var newPaths = [],
+            lastSquare = _.last(this.array);
+        _.each(lastSquare.neighbours(), function (neighbour) {
+            if (!this.contains(neighbour) && maze.square(neighbour) === PATH) newPaths.push(new Path(this.array).push(neighbour));
+        }, this);
+        return newPaths;
+    };
+    this.toArray = function () {
+        return _.map(this.array, function (square) {
+            return square.toArray();
+        });
+    }
 };
 
 var WALL = 0,
@@ -47,8 +85,11 @@ var WALL = 0,
 
 exports = module.exports = {
 
+    // for testing
     obj: {
-        Square: Square
+        Maze: Maze,
+        Square: Square,
+        Path: Path
     },
 
     build: function (width, height, density) {
@@ -83,35 +124,25 @@ exports = module.exports = {
         assert.equal(PATH, maze.square(start), 'start position should be an available square');
         assert.equal(PATH, maze.square(finish), 'finish position should be an available square');
 
-        var pathContains = function(path, square) {
-            return _.find(path, function(otherSquare) { return square.equals(otherSquare);}) !== undefined;
-        };
+        var paths = [new Path([start])],
+            pathOK;
 
-        var extendPath = function(maze, path) {
-            var newPaths = [],
-                lastSquare = _.last(path);
-            if (!pathContains(path, lastSquare.left()) && maze.square(lastSquare.left()) === PATH) newPaths.push(_.union(path, lastSquare.left()));
-            if (!pathContains(path, lastSquare.right()) && maze.square(lastSquare.right()) === PATH) newPaths.push(_.union(path, lastSquare.right()));
-            if (!pathContains(path, lastSquare.up()) && maze.square(lastSquare.up()) === PATH) newPaths.push(_.union(path, lastSquare.up()));
-            if (!pathContains(path, lastSquare.down()) && maze.square(lastSquare.down()) === PATH) newPaths.push(_.union(path, lastSquare.down()));
+        while_loop:
+            while (true) {
+                var newPaths = [];
+                for (var i in paths) {
+                    var pathI = paths[i],
+                        extendedPathsI = pathI.extend(maze);
+                    if (extendedPathsI.length > 0) newPaths = _.union(newPaths, extendedPathsI);
 
-            return newPaths;
-        };
-
-        var paths = [[start]];
-
-        while (paths.length > 0) {
-            var newPaths = [];
-            for (var i in paths) {
-                var pathsI = extendPath(maze, paths[i]);
-                if (pathsI.length > 0) newPaths = _.union(newPaths, pathsI);
+                    pathOK = _.find(extendedPathsI, function (path) {
+                        return path.contains(finish)
+                    });
+                }
+                if (newPaths.length === 0 || pathOK !== undefined) break;
+                paths = newPaths;
             }
-            if (newPaths.length === 0) {break};
-            paths = newPaths;
-            console.log(paths);
-        }
 
-        var aPath = _.last(paths);
-        return _.map(aPath, function(square) {return square.toArray(); });
+        return pathOK.toArray();
     }
 };

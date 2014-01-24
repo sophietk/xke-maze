@@ -5,27 +5,59 @@ describe 'Square', ->
 
   square = new maze.obj.Square(1, 0)
 
-  it 'should return a square with appropriate position', ->
-    square.should.have.property('x')
-    square.x.should.equal(1)
-    square.should.have.property('y')
-    square.y.should.equal(0)
+  describe '#init()', ->
+    it 'should return a square with appropriate position', ->
+      square.should.have.property('x')
+      square.x.should.equal(1)
+      square.should.have.property('y')
+      square.y.should.equal(0)
 
-  it 'should return the left neighbour square', ->
-    square.left().x.should.equal(0)
-    square.left().y.should.equal(0)
+  describe '#left()', ->
+    it 'should return the left neighbour square', ->
+      square.left().x.should.equal(0)
+      square.left().y.should.equal(0)
 
-  it 'should return the right neighbour square', ->
-    square.right().x.should.equal(2)
-    square.right().y.should.equal(0)
+  describe '#right()', ->
+    it 'should return the right neighbour square', ->
+      square.right().x.should.equal(2)
+      square.right().y.should.equal(0)
 
-  it 'should return the up neighbour square', ->
-    square.up().x.should.equal(1)
-    square.up().y.should.equal(-1)
+  describe '#up()', ->
+    it 'should return the up neighbour square', ->
+      square.up().x.should.equal(1)
+      square.up().y.should.equal(-1)
 
-  it 'should return the down neighbour square', ->
-    square.down().x.should.equal(1)
-    square.down().y.should.equal(1)
+  describe '#down()', ->
+    it 'should return the down neighbour square', ->
+      square.down().x.should.equal(1)
+      square.down().y.should.equal(1)
+
+describe 'Path', ->
+
+  lines =
+    [[0, 0, 1]
+     [0, 1, 1]
+     [1, 1, 0]]
+  lines = new maze.obj.Maze(lines)
+  start = new maze.obj.Square(1,1)
+
+  describe '#extend()', ->
+    it 'should return extended paths from one', ->
+      path = new maze.obj.Path([start])
+      extendedPaths = path.extend(lines)
+      extendedPaths.should.have.length(2)
+      path1 = extendedPaths[0]
+      path1.toArray().should.have.length(2)
+      path1.toArray().should.deep.equal([[1,1], [2,1]])
+      path2 = extendedPaths[1]
+      path2.toArray().should.have.length(2)
+      path2.toArray().should.deep.equal([[1,1], [1,2]])
+
+      extendedPaths = path1.extend(lines)
+      extendedPaths.should.have.length(1)
+      path3 = extendedPaths[0]
+      path3.toArray().should.have.length(3)
+      path3.toArray().should.deep.equal([[1,1], [2,1], [2,0]])
 
 describe 'maze', ->
 
@@ -62,9 +94,19 @@ describe 'maze', ->
     it 'should solve a 3x3 maze', ->
       lines =
         [[0, 0, 1]
-          [0, 1, 1]
-          [1, 1, 0]]
-      start = [0, 2]
-      finish = [2, 0]
+         [0, 1, 1]
+         [1, 1, 0]]
+      start = [2, 0]
+      finish = [0, 2]
       path = maze.solve(lines, start, finish)
-      path.should.deep.equal([[2, 0], [2, 1], [1, 1], [1, 0], [0, 0]])
+      path.should.deep.equal([[2, 0], [2, 1], [1, 1], [1, 2], [0, 2]])
+
+    it 'should solve a maze when finish point is reached', ->
+      lines =
+        [[0, 0, 1]
+         [0, 1, 1]
+         [1, 1, 0]]
+      start = [2, 0]
+      finish = [1, 2]
+      path = maze.solve(lines, start, finish)
+      path.should.deep.equal([[2, 0], [2, 1], [1, 1], [1, 2]])
