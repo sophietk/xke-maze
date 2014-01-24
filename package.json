@@ -6,14 +6,13 @@
     "scripts": {
         "test": "mocha --compilers coffee:coffee-script ./test"
     },
-    "main": "./maze.js",
+    "main": "./src/index.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/sophietk/xke-maze.git"
     },
     "dependencies": {
         "underscore": "1.5.2",
-        "underscore.string": "2.3.3",
         "chai": "1.8.1"
     },
     "devDependencies": {
