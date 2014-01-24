@@ -128,6 +128,7 @@ exports = module.exports = {
         var paths = [new Path([start])],
             pathOK;
 
+        // TODO : do recursive algorithm instead of loop
         while_loop:
             while (true) {
                 var newPaths = [];
@@ -144,6 +145,6 @@ exports = module.exports = {
                 paths = newPaths;
             }
 
-        return pathOK.toArray();
+        return pathOK ? pathOK.toArray() : undefined;
     }
 };

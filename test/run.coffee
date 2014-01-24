@@ -113,3 +113,13 @@ describe 'maze', ->
       finish = [1, 2]
       path = maze.solve(lines, start, finish)
       path.should.deep.equal([[2, 0], [2, 1], [1, 1], [1, 2]])
+
+    it 'should return undefined when finish point is not reachable', ->
+      lines =
+        [[1, 0, 1]
+          [0, 1, 1]
+          [1, 1, 0]]
+      start = [2, 0]
+      finish = [0, 0]
+      path = maze.solve(lines, start, finish)
+      should.not.exist(path)
