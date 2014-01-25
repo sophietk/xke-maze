@@ -3,7 +3,11 @@ maze.js
 
 A maze generator and solver
 
-###build(width, height, density)
+```
+var maze = require('maze')
+```
+
+### build(width, height, density)
 ```
 > var myMaze = maze.build(5, 9, 0.6)
 
@@ -18,9 +22,9 @@ A maze generator and solver
   [ 0, 0, 1, 0, 0 ] ]
 ```
 
-###solve(maze, start, finish)
+### solve(maze, start, finish)
 ```
-> maze.solve(myMaze, [0, 2], [0, 5])
+> var solution = maze.solve(myMaze, [0, 2], [0, 5])
 
 [ [ 0, 2 ],
   [ 0, 1 ],
@@ -36,4 +40,19 @@ A maze generator and solver
   [ 1, 6 ],
   [ 1, 5 ],
   [ 0, 5 ] ]
+```
+
+### highlight(maze, solution)
+```
+> maze.highlight(myMaze, solution)
+
+[ [ 1, 1, 1, 1, 1 ],
+  [ 2, 2, 2, 2, 1 ],
+  [ 2, 0, 1, 2, 0 ],
+  [ 0, 1, 1, 2, 1 ],
+  [ 0, 0, 0, 2, 1 ],
+  [ 2, 2, 0, 2, 1 ],
+  [ 0, 2, 2, 2, 1 ],
+  [ 0, 1, 1, 0, 1 ],
+  [ 0, 0, 1, 0, 0 ] ]
 ```

@@ -5,7 +5,8 @@ var Maze = require('./obj.js').Maze,
     assert = require('chai').assert;
 
 var WALL = 0,
-    PATH = 1;
+    PATH = 1,
+    HIGHLIGHT = 2;
 
 exports = module.exports = {
 
@@ -57,5 +58,12 @@ exports = module.exports = {
             });
             if (pathOK) return pathOK.toArray();
         }
+    },
+
+    highlight: function (maze, path) {
+        _.each(path, function (square) {
+            maze[square[1]][square[0]] = HIGHLIGHT;
+        });
+        return maze;
     }
 };

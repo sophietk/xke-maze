@@ -85,3 +85,19 @@ describe 'maze', ->
       finish = [0, 0]
       path = maze.solve(lines, start, finish)
       should.not.exist(path)
+
+  describe '#highlight()', ->
+
+    it 'should highlight a path in maze', ->
+      lines =
+        [[1, 1, 1]
+         [0, 1, 1]
+         [1, 1, 0]]
+      start = [2, 0]
+      finish = [0, 2]
+      path = maze.solve(lines, start, finish)
+      highlight = maze.highlight(lines, path)
+      highlight.should.deep.equal(
+        [[1, 2, 2]
+         [0, 2, 1]
+         [2, 2, 0]])
