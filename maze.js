@@ -120,6 +120,8 @@
             finish = new Square(finish[0], finish[1]);
             maze = new Maze(maze);
 
+            if (maze.square(start) !== PATH || maze.square(finish) !== PATH) return undefined;
+
             var paths = [new Path([start])];
 
             while (true) {

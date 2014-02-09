@@ -116,6 +116,15 @@ describe 'maze', ->
       path = maze.solve(lines, start, finish)
       path.should.deep.equal([[2, 0], [2, 1], [1, 1], [1, 2], [0, 2]])
 
+    it 'should return no solution when start/finish position is not available', ->
+      lines =
+        [[0, 1]
+         [1, 1]]
+      start = [0, 0]
+      finish = [1, 1]
+      path = maze.solve(lines, start, finish)
+      should.not.exist(path)
+
     it 'should solve a maze when finish point is reached', ->
       lines =
         [[0, 0, 1]
