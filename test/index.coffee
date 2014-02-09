@@ -1,5 +1,67 @@
-maze = require('../src/index.js')
+maze = require('../maze.js')
 should = require('chai').should()
+
+Maze = maze.Obj.Maze
+Square = maze.Obj.Square
+Path = maze.Obj.Path
+
+describe 'Square', ->
+
+  square = new Square(1, 0)
+
+  describe '#init()', ->
+    it 'should return a square with appropriate position', ->
+      square.should.have.property('x')
+      square.x.should.equal(1)
+      square.should.have.property('y')
+      square.y.should.equal(0)
+
+  describe '#left()', ->
+    it 'should return the left neighbour square', ->
+      square.left().x.should.equal(0)
+      square.left().y.should.equal(0)
+
+  describe '#right()', ->
+    it 'should return the right neighbour square', ->
+      square.right().x.should.equal(2)
+      square.right().y.should.equal(0)
+
+  describe '#up()', ->
+    it 'should return the up neighbour square', ->
+      square.up().x.should.equal(1)
+      square.up().y.should.equal(-1)
+
+  describe '#down()', ->
+    it 'should return the down neighbour square', ->
+      square.down().x.should.equal(1)
+      square.down().y.should.equal(1)
+
+describe 'Path', ->
+
+  lines =
+    [[0, 0, 1]
+      [0, 1, 1]
+      [1, 1, 0]]
+  lines = new Maze(lines)
+  start = new Square(1,1)
+
+  describe '#extend()', ->
+    it 'should return extended paths from one', ->
+      path = new Path([start])
+      extendedPaths = path.extend(lines)
+      extendedPaths.should.have.length(2)
+      path1 = extendedPaths[0]
+      path1.toArray().should.have.length(2)
+      path1.toArray().should.deep.equal([[1,1], [2,1]])
+      path2 = extendedPaths[1]
+      path2.toArray().should.have.length(2)
+      path2.toArray().should.deep.equal([[1,1], [1,2]])
+
+      extendedPaths = path1.extend(lines)
+      extendedPaths.should.have.length(1)
+      path3 = extendedPaths[0]
+      path3.toArray().should.have.length(3)
+      path3.toArray().should.deep.equal([[1,1], [2,1], [2,0]])
 
 describe 'maze', ->
 
@@ -43,18 +105,6 @@ describe 'maze', ->
       sum1.should.be.below(sum2) # this test depends on probability
 
   describe '#solve()', ->
-
-    it 'should throw error when start/finish argument is not a position', ->
-      (-> maze.solve([[0]], 'test', [0, 0])).should.throw(Error, 'to be an array')
-      (-> maze.solve([[0]], [0, 0], [0, 0, 1])).should.throw(Error, 'to have a length of 2')
-
-    it 'should throw error when start/finish argument is not in maze', ->
-      (-> maze.solve([[1]], [0, 1], [0, 0])).should.throw(Error, 'should be in maze')
-      (-> maze.solve([[1]], [0, 0], [1, 0])).should.throw(Error, 'should be in maze')
-      (-> maze.solve([[0]], [0, 0], [0, 0])).should.throw(Error, 'should be an available square')
-
-    it 'should throw error when start=finish', ->
-      (-> maze.solve([[1]], [0, 0], [0, 0])).should.throw(Error, 'should not be the same positions')
 
     it 'should solve a 3x3 maze', ->
       lines =
