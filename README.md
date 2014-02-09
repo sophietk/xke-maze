@@ -3,24 +3,6 @@ maze.js
 
 A maze generator and solver
 
-### use
-As node module :
-- in package.json
-```
-  "dependencies": {
-    "maze": "git://github.com/sophietk/xke-maze.git"
-  }
-```
-- in js files
-```
-var maze = require('maze')
-```
-As browser library :
-```
-<script type="text/javascript" src="maze.js"></script>
-```
-(see [example.html](http://rawgithub.com/sophietk/xke-maze/master/example.html))
-
 ### build(width, height, density)
 ```
 > var myMaze = maze.build(5, 9, 0.6)
@@ -70,3 +52,21 @@ As browser library :
   [ 0, 1, 1, 0, 1 ],
   [ 0, 0, 1, 0, 0 ] ]
 ```
+
+### use
+#### As a node module:
+- in package.json
+```
+  "dependencies": {
+    "maze": "git://github.com/sophietk/xke-maze.git"
+  }
+```
+- in js files
+```
+var maze = require('maze')
+```
+#### In browser:
+```
+<script type="text/javascript" src="maze.js"></script>
+```
+(see [example.html](http://rawgithub.com/sophietk/xke-maze/master/example.html))
