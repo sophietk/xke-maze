@@ -13,7 +13,7 @@
 
     /*
 
-     maze representation :
+     maze representation:
 
      ┼────────── x
      |0,0    n,0
@@ -93,6 +93,37 @@
         }
     };
 
+    /*
+     Construction by segments:
+     possible ways in a segment
+
+     0 x 0
+     x 1 x
+     0 x 0
+
+     distance(possibleWay, center) = 1
+
+     */
+    var randomSegment = function () {
+        var possibleWays = [
+            [1, 0],
+            [0, 1],
+            [2, 1],
+            [1, 2]
+        ];
+        var segment = [
+                [WALL, WALL, WALL],
+                [WALL, PATH, WALL],
+                [WALL, WALL, WALL]
+            ],
+            randomWays = _.sample(possibleWays, _.random(2, 4));
+        _.each(randomWays, function (randomWay) {
+            segment[randomWay[1]][randomWay[0]] = PATH;
+        });
+        return segment;
+    };
+
+    // Library core
     var maze = {
 
         // for testing
@@ -103,6 +134,8 @@
         },
 
         build: function (width, height, density) {
+            if (density === undefined) return this.build2(width, height);
+
             var maze = [];
             _.each(_.range(height), function () {
                 var line = [];
@@ -111,6 +144,26 @@
                     line.push(square);
                 });
                 maze.push(line);
+            });
+            return maze;
+        },
+
+        build2: function (width, height) {
+            var maze = [];
+            _.each(_.range(width * height), function (indexSegment) {
+                var x = indexSegment % width,
+                    y = Math.floor(indexSegment / height),
+                    segment = randomSegment();
+                if (x === 0) {
+                    maze.push([]);
+                    maze.push([]);
+                    maze.push([]);
+                }
+                _.each(segment, function (line, xSegment) {
+                    _.each(line, function (square, ySegment) {
+                        maze[y * 3 + ySegment][x * 3 + xSegment] = square;
+                    });
+                });
             });
             return maze;
         },

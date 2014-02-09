@@ -4,6 +4,7 @@ maze.js
 A maze generator and solver
 
 ### build(width, height, density)
+generates a maze randomly
 ```
 > var myMaze = maze.build(5, 9, 0.6)
 
@@ -16,6 +17,22 @@ A maze generator and solver
   [ 0, 1, 1, 1, 1 ],
   [ 0, 1, 1, 0, 1 ],
   [ 0, 0, 1, 0, 0 ] ]
+```
+
+### build(width, height)
+generates a maze by segments
+```
+> var mySuperMaze = maze.build(3, 3)
+
+[ [ 0, 1, 0, 0, 1, 0, 0, 1, 0 ],
+  [ 0, 1, 1, 1, 1, 0, 1, 1, 0 ],
+  [ 0, 1, 0, 0, 1, 0, 0, 1, 0 ],
+  [ 0, 0, 0, 0, 1, 0, 0, 1, 0 ],
+  [ 1, 1, 1, 1, 1, 0, 1, 1, 1 ],
+  [ 0, 1, 0, 0, 1, 0, 0, 1, 0 ],
+  [ 0, 1, 0, 0, 0, 0, 0, 1, 0 ],
+  [ 0, 1, 1, 1, 1, 1, 1, 1, 1 ],
+  [ 0, 1, 0, 0, 1, 0, 0, 1, 0 ] ]
 ```
 
 ### solve(maze, start, finish)
@@ -69,4 +86,4 @@ var maze = require('maze')
 ```
 <script type="text/javascript" src="maze.js"></script>
 ```
-(see [example.html](http://rawgithub.com/sophietk/xke-maze/master/example.html))
+(see [example.html](http://rawgithub.com/sophietk/xke-maze/segments/example.html))

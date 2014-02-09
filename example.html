@@ -5,7 +5,7 @@
     <script type="text/javascript" src="maze.js"></script>
     <style>
         td { width: 18px; height: 18px; border: 0; color: transparent; }
-        tr:first-child td:first-child, tr:last-child td:last-child { border: 1px solid red; }
+        tr:nth-child(2) td:nth-child(2), tr:nth-last-child(2) td:nth-last-child(2) { border: 1px solid red; }
         .square0 { background: #966f33; }
         .square1 { background: #fff8dc; }
         .square2 { background: #46c7c7; }
@@ -24,12 +24,17 @@
 
     var myMaze;
     var generate = function () {
-        myMaze = maze.build(5, 5, 0.6);
+        myMaze = maze.build(7, 7, 0.6);
+        document.getElementById('demo').innerHTML = makeTableHTML(myMaze);
+        document.getElementById('message').innerHTML = '';
+    };
+    var generate2 = function () {
+        myMaze = maze.build(4, 4);
         document.getElementById('demo').innerHTML = makeTableHTML(myMaze);
         document.getElementById('message').innerHTML = '';
     };
     var solve = function () {
-        var solution = maze.solve(myMaze, [0, 0], [4, 4]);
+        var solution = maze.solve(myMaze, [1, 1], [myMaze.length - 2, myMaze.length - 2]);
         if (solution) {
             document.getElementById('demo').innerHTML = makeTableHTML(maze.highlight(myMaze, solution));
             document.getElementById('message').innerHTML = 'solution length: ' + solution.length;
@@ -37,7 +42,8 @@
     };
 </script>
 
-<button onclick="generate()">Generate</button>
+<button onclick="generate()">Generate randomly</button>
+<button onclick="generate2()">Generate by segments</button>
 <button onclick="solve()">Solve</button>
 
 <div id="demo"></div>
