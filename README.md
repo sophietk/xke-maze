@@ -19,7 +19,7 @@ As browser library :
 ```
 <script type="text/javascript" src="maze.js"></script>
 ```
-(see example.html)
+(see [example.html](http://rawgithub.com/sophietk/xke-maze/master/example.html))
 
 ### build(width, height, density)
 ```
