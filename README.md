@@ -3,9 +3,23 @@ maze.js
 
 A maze generator and solver
 
+### use
+As node module :
+- in package.json
+```
+  "dependencies": {
+    "maze": "git://github.com/sophietk/xke-maze.git"
+  }
+```
+- in js files
 ```
 var maze = require('maze')
 ```
+As browser library :
+```
+<script type="text/javascript" src="maze.js"></script>
+```
+(see example.html)
 
 ### build(width, height, density)
 ```

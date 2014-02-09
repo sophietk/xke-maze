@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+    <script type="text/javascript" src="maze.js"></script>
+    <style>
+        td { width: 18px; height: 18px; border: 0; color: transparent; }
+        tr:first-child td:first-child, tr:last-child td:last-child { border: 1px solid red; }
+        .square0 { background: #966f33; }
+        .square1 { background: #fff8dc; }
+        .square2 { background: #46c7c7; }
+    </style>
+</head>
+<body>
+
+<script>
+    function makeTableHTML(doubleArray) {
+        var result = '<table>';
+        _.each(doubleArray, function (line) { result += '<tr>'; _.each(line, function (square) {
+                result += '<td class="square' + square + '">' + square + '</td>';
+            }); result += '</tr>'; });
+        return result += '</table>';
+    }
+
+    var myMaze;
+    var generate = function () {
+        myMaze = maze.build(5, 5, 0.6);
+        document.getElementById('demo').innerHTML = makeTableHTML(myMaze);
+        document.getElementById('message').innerHTML = '';
+    };
+    var solve = function () {
+        var solution = maze.solve(myMaze, [0, 0], [4, 4]);
+        if (solution) {
+            document.getElementById('demo').innerHTML = makeTableHTML(maze.highlight(myMaze, solution));
+            document.getElementById('message').innerHTML = 'solution length: ' + solution.length;
+        } else document.getElementById('message').innerHTML = 'unsolvable';
+    };
+</script>
+
+<button onclick="generate()">Generate</button>
+<button onclick="solve()">Solve</button>
+
+<div id="demo"></div>
+<div id="message"></div>
+
+</body>
+</html>
