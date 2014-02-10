@@ -19,10 +19,23 @@ generates a maze randomly
   [ 0, 0, 1, 0, 0 ] ]
 ```
 
-### build(width, height)
-generates a maze by segments
+### build2(width, height)
+generates a maze composed of 2x2 segments, with size (widthx2)x(heightx2)
 ```
-> var mySuperMaze = maze.build(3, 3)
+> var mySuperMaze = maze.build2(3, 3)
+
+[ [ 0, 1, 0, 1, 0, 1 ],
+  [ 1, 1, 1, 1, 1, 1 ],
+  [ 0, 0, 0, 1, 0, 0 ],
+  [ 1, 1, 1, 1, 1, 1 ],
+  [ 0, 1, 0, 0, 0, 1 ],
+  [ 1, 1, 1, 1, 0, 1 ] ]
+```
+
+### build3(width, height)
+generates a maze composed of 3x3 segments, with size (widthx3)x(heightx3)
+```
+> var myHyperMaze = maze.build3(3, 3)
 
 [ [ 0, 1, 0, 0, 1, 0, 0, 1, 0 ],
   [ 0, 1, 1, 1, 1, 0, 1, 1, 0 ],

@@ -94,17 +94,35 @@
     };
 
     /*
-     Construction by segments:
-     possible ways in a segment
+     Construction by segments
+     possible ways in a 2x2 segment:
+
+     0 x
+     x 1
+
+     possible ways in a 3x3 segment:
 
      0 x 0
      x 1 x
      0 x 0
 
-     distance(possibleWay, center) = 1
-
      */
-    var randomSegment = function () {
+    var randomSegment2 = function () {
+        var possibleWays = [
+            [1, 0],
+            [0, 1]
+        ];
+        var segment = [
+                [WALL, WALL],
+                [WALL, PATH]
+            ],
+            randomWays = _.sample(possibleWays, _.random(1, 2));
+        _.each(randomWays, function (randomWay) {
+            segment[randomWay[1]][randomWay[0]] = PATH;
+        });
+        return segment;
+    };
+    var randomSegment3 = function () {
         var possibleWays = [
             [1, 0],
             [0, 1],
@@ -134,8 +152,6 @@
         },
 
         build: function (width, height, density) {
-            if (density === undefined) return this.build2(width, height);
-
             var maze = [];
             _.each(_.range(height), function () {
                 var line = [];
@@ -153,7 +169,26 @@
             _.each(_.range(width * height), function (indexSegment) {
                 var x = indexSegment % width,
                     y = Math.floor(indexSegment / height),
-                    segment = randomSegment();
+                    segment = randomSegment2();
+                if (x === 0) {
+                    maze.push([]);
+                    maze.push([]);
+                }
+                _.each(segment, function (line, xSegment) {
+                    _.each(line, function (square, ySegment) {
+                        maze[y * 2 + ySegment][x * 2 + xSegment] = square;
+                    });
+                });
+            });
+            return maze;
+        },
+
+        build3: function (width, height) {
+            var maze = [];
+            _.each(_.range(width * height), function (indexSegment) {
+                var x = indexSegment % width,
+                    y = Math.floor(indexSegment / height),
+                    segment = randomSegment3();
                 if (x === 0) {
                     maze.push([]);
                     maze.push([]);
