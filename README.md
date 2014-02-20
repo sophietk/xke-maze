@@ -1,4 +1,4 @@
-maze.js
+maze.js [![Build Status](https://drone.io/github.com/sophietk/xke-maze/status.png)](https://drone.io/github.com/sophietk/xke-maze/latest)
 =======
 
 A maze generator and solver
